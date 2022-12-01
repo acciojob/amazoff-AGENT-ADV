@@ -1,5 +1,6 @@
 package com.driver;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 
@@ -25,7 +26,7 @@ public class OrderRepository
     public void addPartner( String partnerId)
     {
         DeliveryPartner deliveryPartner = new DeliveryPartner(partnerId);
-        map_partner.put(deliveryPartner.getId(), deliveryPartner);
+        map_partner.put(partnerId, deliveryPartner);
     }
 
     public void addOrderPartnerPair( String orderId,  String partnerId)
@@ -34,9 +35,12 @@ public class OrderRepository
 
         map_partner_lastOrder.put(partnerId,orderId);
 
-        int count =  map_partner.get(partnerId).getNumberOfOrders();
-        count++;
-        map_partner.get(partnerId).setNumberOfOrders(count);
+        if(map_partner.containsKey(partnerId) )
+        {
+           int count = map_partner.get(partnerId).getNumberOfOrders();
+            count++;
+            map_partner.get(partnerId).setNumberOfOrders(count);
+        }
     }
 
     public Order getOrderById( String orderId)
@@ -51,7 +55,12 @@ public class OrderRepository
 
     public Integer getOrderCountByPartnerId( String partnerId)
     {
-        Integer ans =  map_partner.get(partnerId).getNumberOfOrders();
+        Integer ans = null;
+        if(map_partner.containsKey(partnerId) )
+        {
+           ans = map_partner.get(partnerId).getNumberOfOrders();
+        }
+
         return ans;
     }
 
