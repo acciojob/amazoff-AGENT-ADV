@@ -38,7 +38,7 @@ public class OrderRepository
         if(map_partner.containsKey(partnerId) )
         {
            int count = map_partner.get(partnerId).getNumberOfOrders();
-            count++;
+           // count++;
             map_partner.get(partnerId).setNumberOfOrders(count);
         }
     }
