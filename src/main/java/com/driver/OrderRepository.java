@@ -111,6 +111,9 @@ public class OrderRepository
 
     public String getLastDeliveryTimeByPartnerId( String partnerId)
     {
+        if(!map_partner_lastOrder.containsKey(partnerId) || map_order.get(map_partner_lastOrder.get(partnerId)) == null )
+             return "";
+
         int time = map_order.get(map_partner_lastOrder.get(partnerId)).getDeliveryTime();
         int hr = time/60;
         int min = time%60;
@@ -123,7 +126,7 @@ public class OrderRepository
 
     public void deletePartnerById( String partnerId)
     {
-        map_partner.remove(partnerId);
+        if(map_partner.containsKey(partnerId) ) map_partner.remove(partnerId);
 
         List<String> temp = new ArrayList<>(map_order_partner.keySet());
 
@@ -135,8 +138,8 @@ public class OrderRepository
 
     public void deleteOrderById( String orderId)
     {
-        map_order.remove(orderId);
-        map_order_partner.remove(orderId);
+       if(map_order.containsKey(orderId)) map_order.remove(orderId);
+       if(map_order_partner.containsKey(orderId)) map_order_partner.remove(orderId);
 
     }
 
