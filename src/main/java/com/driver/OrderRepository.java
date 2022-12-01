@@ -1,10 +1,7 @@
 package com.driver;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -54,7 +51,8 @@ public class OrderRepository
 
     public Integer getOrderCountByPartnerId( String partnerId)
     {
-        return map_partner.get(partnerId).getNumberOfOrders();
+        Integer ans =  map_partner.get(partnerId).getNumberOfOrders();
+        return ans;
     }
 
     public List<String> getOrdersByPartnerId( String partnerId)
@@ -79,7 +77,7 @@ public class OrderRepository
 
     public Integer getCountOfUnassignedOrders()
     {
-        int count =0;
+        Integer count =0;
         for(String order_id : map_order.keySet())
         {
             if(!map_order_partner.containsKey(order_id)) count++;
@@ -89,7 +87,7 @@ public class OrderRepository
 
     public Integer getOrdersLeftAfterGivenTimeByPartnerId( String time,  String partnerId)
     {
-        int count = 0;
+        Integer count = 0;
         for(String order_id : map_order_partner.keySet())
         {
             if(map_order_partner.get(order_id).equalsIgnoreCase(partnerId))
@@ -105,11 +103,13 @@ public class OrderRepository
     public String getLastDeliveryTimeByPartnerId( String partnerId)
     {
         int time = map_order.get(map_partner_lastOrder.get(partnerId)).getDeliveryTime();
-        String hr = String.valueOf(time/60);
-        String min = String.valueOf(time%60);
-        if(min.length() == 1) min = "0"+min;
-
-        return hr+":"+min;
+        int hr = time/60;
+        int min = time%60;
+        String hour = String.valueOf(hr);
+        String minute = String.valueOf(min);
+        if(minute.length() == 1) minute = "0"+minute;
+        if(hour.length() == 1) hour = "0"+ hour;
+        return hour+":"+minute;
     }
 
     public void deletePartnerById( String partnerId)
